@@ -1,26 +1,19 @@
-<h2>Log in</h2>
+<div class="d-flex justify-content-center align-items-center" style="height: 50vh;" >
+  <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+    <h1 class="h3 mb-3 fw-normal text-center">Please sign in</h1>
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
+    <%= render "users/shared/error_messages", resource: resource %>
 
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "current-password" %>
-  </div>
-
-  <% if devise_mapping.rememberable? %>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
+    <div class="form-floating mb-3">
+      <%= f.email_field :email, class: "form-control", id: "floatingInput", placeholder: "name@example.com", autofocus: true, autocomplete: "email" %>
+      <%= f.label :email, "Email address", for: "floatingInput" %>
     </div>
+
+    <div class="form-floating mb-3">
+      <%= f.password_field :password, class: "form-control", id: "floatingPassword", placeholder: "Password", autocomplete: "current-password" %>
+      <%= f.label :password, "Password", for: "floatingPassword" %>
+    </div>
+
+    <%= f.submit "Sign in", class: "btn btn-primary w-100 py-2" %>
   <% end %>
-
-  <div class="actions">
-    <%= f.submit "Log in" %>
-  </div>
-<% end %>
-
-<%= render "users/shared/links" %>
+</div>

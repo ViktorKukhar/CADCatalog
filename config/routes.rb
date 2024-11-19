@@ -3,6 +3,7 @@ Rails.application.routes.draw do
     sessions: 'users/sessions',
     registrations: 'users/registrations'
   }
+  resources :records
 
   root 'home#index'
   get "up" => "rails/health#show", as: :rails_health_check
