@@ -3,11 +3,17 @@ class RecordsController < ApplicationController
   before_action :authenticate_user!, only: %i[ new ]
 
   def index
-    @records = Record.all
+    if params[:tag]
+      @records = Record.joins(:tags).where(tags: { name: params[:tag] }).distinct
+      @tag = Tag.find_by(name: params[:tag])
+    else
+      @records = Record.all
+    end
   end
 
   def show
     @record = Record.find(params[:id])
+    @user_records = Record.where(user_id: @record.user_id).where.not(id: @record.id)
   end
 
   def new
@@ -48,6 +54,6 @@ class RecordsController < ApplicationController
   end
 
   def record_params
-    params.require(:record).permit(:title, :description)
+    params.require(:record).permit(:title, :description, :user_id, :tag_list, files: [], images: [])
   end
 end

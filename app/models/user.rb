@@ -5,9 +5,4 @@ class User < ApplicationRecord
 
   has_many :records, dependent: :destroy
 
-
-  validates :username, presence: true,
-            length: { minimum: 3, maximum: 50 },
-            uniqueness: true,
-            format: { with: /\A[a-zA-Z0-9_]+\z/ }
 end
