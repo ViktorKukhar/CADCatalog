@@ -1,0 +1,36 @@
+<header class="p-3 border-bottom">
+  <div class="container">
+    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+
+      <%= link_to 'CATALOG', root_path, class: 'd-flex align-items-center mb-2 me-5 mb-lg-0 text-decoration-none fs-3 fw-bold' %>
+
+      <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+        <li><a href="#" class="nav-link px-2 link-secondary">Overview</a></li>
+        <li><a href="#" class="nav-link px-2 link-body-emphasis">Inventory</a></li>
+        <li><a href="#" class="nav-link px-2 link-body-emphasis">Customers</a></li>
+        <li><a href="#" class="nav-link px-2 link-body-emphasis">Products</a></li>
+      </ul>
+
+      <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+        <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
+      </form>
+
+      <% if user_signed_in? %>
+        <div class="dropdown text-end">
+          <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" >
+            <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+          </a>
+          <ul class="dropdown-menu text-small">
+            <li><%= link_to 'My Profile', "#", class: 'dropdown-item' %></li>
+            <li><%= link_to 'New Record', new_record_path, class: 'dropdown-item' %></li>
+            <li><%= button_to 'Sign Out', destroy_user_session_path, method: :delete, class: 'dropdown-item' %></li>
+          </ul>
+        </div>
+      <% else %>
+        <a><%= link_to 'Log In', new_user_session_path, class: 'nav-link px-2 link-body-emphasis' %></a>
+        <a><%= link_to 'Sign Up', new_user_registration_path, class: 'nav-link px-2 link-body-emphasis' %></a>
+      <% end %>
+
+    </div>
+  </div>
+</header>
