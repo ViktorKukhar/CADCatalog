@@ -1,0 +1,32 @@
+<div class="container">
+  <nav class="navbar navbar-expand-lg" aria-label="Eleventh navbar example">
+    <div class="container-fluid">
+      <div class="collapse navbar-collapse" id="navbarsExample09">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Tags:</a>
+            <ul class="dropdown-menu">
+              <% all_tags.each do |tag| %>
+                <% unless (params[:tags] || []).include?(tag.name) %>
+                  <li>
+                    <%= link_to tag.name, root_path(tags: (params[:tags] || []) + [tag.name]), class: "dropdown-item text-decoration-none" %>
+                  </li>
+                <% end %>
+              <% end %>
+            </ul>
+          </li>
+        </ul>
+        <div class="container-lg">
+          <% if params[:tags].present? %>
+            <% params[:tags].each do |tag| %>
+              <%= link_to "#{tag}", root_path(tags: params[:tags].reject { |t| t == tag }), class: "btn btn-outline-secondary btn-sm ms-2"%>
+            <% end %>
+          <% end %>
+        </div>
+        <form role="search">
+          <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+        </form>
+      </div>
+    </div>
+  </nav>
+</div>

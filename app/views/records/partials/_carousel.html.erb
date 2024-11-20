@@ -1,0 +1,32 @@
+<div class="d-flex justify-content-center">
+  <div id="myCarousel" class="carousel w-75 slide mb-6 pt-5 d-flex justify-content-center align-items-center">
+  <!-- Carousel Indicators -->
+  <div class="carousel-indicators">
+    <% record.images.each_with_index do |image, index| %>
+      <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="<%= index %>"
+              class="<%= 'active' if index.zero? %>"
+              aria-label="Slide <%= index + 1 %>"
+              <%= 'aria-current="true"' if index.zero? %>></button>
+    <% end %>
+  </div>
+
+  <!-- Carousel Inner -->
+  <div class="carousel-inner" style="height: 600px; width: 800px" > <!-- Set fixed height for carousel -->
+    <% record.images.each_with_index do |image, index| %>
+      <div class="carousel-item <%= 'active' if index.zero? %>" style="height: 100%;"> <!-- Carousel item matches fixed height -->
+        <%= image_tag image, class: "d-block w-100 h-100", alt: "Slide #{index + 1}" %>
+      </div>
+    <% end %>
+  </div>
+
+    <!-- Carousel Controls -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+</div>

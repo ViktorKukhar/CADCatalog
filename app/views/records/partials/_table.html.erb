@@ -1,0 +1,22 @@
+<table class="table table-hover">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Type</th>
+    <th>Upload at:</th>
+    <th>Download:</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% (@record.files + @record.images).each do |attachment| %>
+    <tr>
+      <td><%= link_to attachment.filename.to_s, rails_blob_path(attachment), class: "text-decoration-none" %></td>
+      <td><%= attachment.content_type %></td>
+      <td><%= attachment.created_at.strftime("%B %dth, %Y") %></td>
+      <td>
+        <%= link_to 'Download', rails_blob_path(attachment, disposition: 'attachment'), class: 'btn btn-outline-secondary btn-sm' %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
