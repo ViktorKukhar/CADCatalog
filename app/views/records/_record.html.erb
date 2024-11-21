@@ -19,9 +19,11 @@
         <% end %>
       </div>
     </div>
-    <div class="card-footer d-flex justify-content-between">
-      <small class="text-body-secondary">@<%= record.user.username %></small>
-      <small class="text-body-secondary"><%= record.created_at.strftime("%d %b %H:%M") %></small>
-    </div>
+    <%= link_to users_profile_path(id: record.user_id), class: "text-decoration-none" do %>
+      <div class="card-footer d-flex justify-content-between">
+        <small class="text-body-secondary">@<%= record.user.username %></small>
+        <small class="text-body-secondary"><%= record.created_at.strftime("%d %b %H:%M") %></small>
+      </div>
+    <% end %>
   </div>
 </div>

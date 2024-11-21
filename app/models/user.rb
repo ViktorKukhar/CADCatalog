@@ -4,5 +4,9 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable, :validatable
 
   has_many :records, dependent: :destroy
+  has_one_attached :avatar
 
+  def full_name
+    "#{self.first_name} #{self.last_name}"
+  end
 end

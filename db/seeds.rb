@@ -6,30 +6,15 @@ Record.destroy_all
 Tag.destroy_all
 User.destroy_all
 
-# Create users
 puts "Creating users..."
-users = []
-10.times do
-  users << User.create!(
-    username: Faker::Internet.unique.username(specifier: /^[a-zA-Z0-9_]{5,10}$/),
-    email: Faker::Internet.unique.email,
-    password: Faker::Internet.password(min_length: 8),
-    encrypted_password: Faker::Internet.password(min_length: 8)
-  )
-end
+users = FactoryBot.create_list(:user, 10)
 puts "Created #{users.count} users."
 
-puts "Creating CAD-related tags..."
-Faker::UniqueGenerator.clear # Clear previous uniqueness cache
-tags = []
-while tags.size < 10
-  tag_name = Faker::Construction.unique.material
-  tags << Tag.create!(name: tag_name)
-end
+puts "Creating tags..."
+tags = FactoryBot.create_list(:tag, 10)
 puts "Created #{tags.count} tags."
 
-# Create CAD-themed records with multiple images and files
-puts "Creating CAD-related records with images and files..."
+puts "Creating records..."
 50.times do
   user = users.sample
   record = Record.create!(
@@ -41,6 +26,19 @@ puts "Creating CAD-related records with images and files..."
 
   # Assign random CAD-related tags to the record
   record.tags << tags.sample(rand(1..5)) # Assign between 1 and 5 random tags
+
+  # Attach avatar to the user
+  begin
+    image_url = "https://picsum.photos/200/200"
+    downloaded_image = URI.open(image_url)
+    user.avatar.attach(
+      io: downloaded_image,
+      filename: "avatar-#{rand(1000)}.jpg",
+      content_type: "image/jpeg"
+    )
+  rescue OpenURI::HTTPError
+    puts "Image not found, skipping."
+  end
 
   # Attach multiple images to the record
   3.times do
