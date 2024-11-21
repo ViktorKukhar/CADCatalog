@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_11_19_185817) do
+ActiveRecord::Schema[7.1].define(version: 2024_11_21_134102) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -51,11 +51,24 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_19_185817) do
     t.index ["user_id"], name: "index_records_on_user_id"
   end
 
+  create_table "records_softwares", id: false, force: :cascade do |t|
+    t.bigint "record_id", null: false
+    t.bigint "software_id", null: false
+    t.index ["record_id", "software_id"], name: "index_records_softwares_on_record_id_and_software_id", unique: true
+    t.index ["software_id", "record_id"], name: "index_records_softwares_on_software_id_and_record_id", unique: true
+  end
+
   create_table "records_tags", id: false, force: :cascade do |t|
     t.bigint "record_id", null: false
     t.bigint "tag_id", null: false
     t.index ["record_id", "tag_id"], name: "index_records_tags_on_record_id_and_tag_id", unique: true
     t.index ["tag_id", "record_id"], name: "index_records_tags_on_tag_id_and_record_id", unique: true
+  end
+
+  create_table "softwares", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "tags", force: :cascade do |t|

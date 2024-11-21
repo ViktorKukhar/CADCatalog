@@ -2,6 +2,7 @@ class Record < ApplicationRecord
   belongs_to :user
 
   has_and_belongs_to_many :tags
+  has_and_belongs_to_many :softwares
   has_many_attached :files
   has_many_attached :images
 
@@ -18,12 +19,13 @@ class Record < ApplicationRecord
     self.tags.map(&:name).join(", ")
   end
 
-  # private
+  def software_list=(softwares_string)
+    software_names = softwares_string.split(",").collect { |s| s.strip.downcase }.uniq
+    new_or_found_softwares = software_names.collect { |name| Software.find_or_create_by(name: name) }
+    self.softwares = new_or_found_softwares
+  end
 
-  # def correct_file_type
-  #   if file.attached? && !file.content_type.in?(%w(application/acad application/x-acad application/autocad_dwg image/vnd.dwg application/dwg application/x-dwg))
-  #     errors.add(:file, 'must be a DWG file')
-  #   end
-  # end
-
+  def software_list
+    self.softwares.map(&:name).join(", ")
+  end
 end

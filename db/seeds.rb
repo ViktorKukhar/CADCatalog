@@ -14,6 +14,10 @@ puts "Creating tags..."
 tags = FactoryBot.create_list(:tag, 10)
 puts "Created #{tags.count} tags."
 
+puts "Creating software..."
+softwares = FactoryBot.create_list(:software, 10)
+puts "Created #{softwares.count} softwares."
+
 puts "Creating records..."
 50.times do
   user = users.sample
@@ -25,7 +29,9 @@ puts "Creating records..."
   )
 
   # Assign random CAD-related tags to the record
-  record.tags << tags.sample(rand(1..5)) # Assign between 1 and 5 random tags
+  record.tags << tags.sample(rand(1..5))
+  # Assign random Software to the record
+  record.softwares << softwares.sample(rand(1..2))
 
   # Attach avatar to the user
   begin

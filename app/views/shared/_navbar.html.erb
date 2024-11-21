@@ -9,7 +9,19 @@
               <% all_tags.each do |tag| %>
                 <% unless (params[:tags] || []).include?(tag.name) %>
                   <li>
-                    <%= link_to tag.name, root_path(tags: (params[:tags] || []) + [tag.name]), class: "dropdown-item text-decoration-none" %>
+                    <%= link_to tag.name, root_path(tags: (params[:tags] || []) + [tag.name], softwares: params[:softwares]), class: "dropdown-item text-decoration-none" %>
+                  </li>
+                <% end %>
+              <% end %>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Software:</a>
+            <ul class="dropdown-menu">
+              <% all_softwares.each do |software| %>
+                <% unless (params[:softwares] || []).include?(software.name) %>
+                  <li>
+                    <%= link_to software.name, root_path(softwares: (params[:softwares] || []) + [software.name], tags: params[:tags]), class: "dropdown-item text-decoration-none" %>
                   </li>
                 <% end %>
               <% end %>
@@ -17,10 +29,12 @@
           </li>
         </ul>
         <div class="container-lg">
-          <% if params[:tags].present? %>
-            <% params[:tags].each do |tag| %>
-              <%= link_to "#{tag}", root_path(tags: params[:tags].reject { |t| t == tag }), class: "btn btn-outline-secondary btn-sm ms-2"%>
-            <% end %>
+          <% (params[:tags] || []).each do |tag| %>
+            <%= link_to "#{tag} ×", root_path(tags: (params[:tags] || []).reject { |t| t == tag }, softwares: params[:softwares]), class: "btn btn-outline-secondary btn-sm ms-2" %>
+          <% end %>
+
+          <% (params[:softwares] || []).each do |software| %>
+            <%= link_to "#{software} ×", root_path(softwares: (params[:softwares] || []).reject { |s| s == software }, tags: params[:tags]), class: "btn btn-outline-secondary btn-sm ms-2" %>
           <% end %>
         </div>
         <form role="search">

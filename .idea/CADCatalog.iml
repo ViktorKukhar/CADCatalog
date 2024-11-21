@@ -55,16 +55,25 @@
     <orderEntry type="library" scope="PROVIDED" name="devise (v4.9.4, asdf: 3.3.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="diff-lcs (v1.5.1, asdf: 3.3.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="drb (v2.2.1, asdf: 3.3.2) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="elastic-transport (v8.3.5, asdf: 3.3.2) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="elasticsearch (v8.16.0, asdf: 3.3.2) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="elasticsearch-api (v8.16.0, asdf: 3.3.2) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="elasticsearch-model (v8.0.0, asdf: 3.3.2) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="elasticsearch-rails (v8.0.0, asdf: 3.3.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="erubi (v1.13.0, asdf: 3.3.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="factory_bot (v6.5.0, asdf: 3.3.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="factory_bot_rails (v6.4.4, asdf: 3.3.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="faker (v3.5.1, asdf: 3.3.2) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="faraday (v2.12.1, asdf: 3.3.2) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="faraday-net_http (v3.4.0, asdf: 3.3.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="globalid (v1.2.1, asdf: 3.3.2) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="hashie (v5.0.0, asdf: 3.3.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="i18n (v1.14.6, asdf: 3.3.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="io-console (v0.7.2, asdf: 3.3.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="irb (v1.14.1, asdf: 3.3.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="jbuilder (v2.13.0, asdf: 3.3.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="jsbundling-rails (v1.3.1, asdf: 3.3.2) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="json (v2.8.2, asdf: 3.3.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="logger (v1.6.1, asdf: 3.3.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="loofah (v2.23.1, asdf: 3.3.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="mail (v2.8.1, asdf: 3.3.2) [gem]" level="application" />
@@ -72,6 +81,8 @@
     <orderEntry type="library" scope="PROVIDED" name="mini_mime (v1.1.5, asdf: 3.3.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="minitest (v5.25.1, asdf: 3.3.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="msgpack (v1.7.5, asdf: 3.3.2) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="multi_json (v1.15.0, asdf: 3.3.2) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="net-http (v0.5.0, asdf: 3.3.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="net-imap (v0.5.1, asdf: 3.3.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="net-pop (v0.1.2, asdf: 3.3.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="net-smtp (v0.5.0, asdf: 3.3.2) [gem]" level="application" />
@@ -108,6 +119,7 @@
     <orderEntry type="library" scope="PROVIDED" name="timeout (v0.4.2, asdf: 3.3.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="turbo-rails (v2.0.11, asdf: 3.3.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="tzinfo (v2.0.6, asdf: 3.3.2) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="uri (v1.0.2, asdf: 3.3.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="warden (v1.2.9, asdf: 3.3.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="web-console (v4.2.1, asdf: 3.3.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="websocket-driver (v0.7.6, asdf: 3.3.2) [gem]" level="application" />
@@ -122,11 +134,17 @@
     <option name="generators">
       <list>
         <option value="active_record:application_record" />
+        <option value="active_record:devise" />
         <option value="active_record:multi_db" />
         <option value="application_record" />
         <option value="benchmark" />
         <option value="channel" />
         <option value="controller" />
+        <option value="devise" />
+        <option value="devise:controllers" />
+        <option value="devise:install" />
+        <option value="devise:views" />
+        <option value="factory_bot:model" />
         <option value="generator" />
         <option value="helper" />
         <option value="integration_test" />
@@ -136,7 +154,25 @@
         <option value="mailer" />
         <option value="migration" />
         <option value="model" />
+        <option value="mongoid:devise" />
         <option value="resource" />
+        <option value="responders:install" />
+        <option value="responders_controller" />
+        <option value="rspec:channel" />
+        <option value="rspec:controller" />
+        <option value="rspec:feature" />
+        <option value="rspec:generator" />
+        <option value="rspec:helper" />
+        <option value="rspec:install" />
+        <option value="rspec:integration" />
+        <option value="rspec:job" />
+        <option value="rspec:mailbox" />
+        <option value="rspec:mailer" />
+        <option value="rspec:model" />
+        <option value="rspec:request" />
+        <option value="rspec:scaffold" />
+        <option value="rspec:system" />
+        <option value="rspec:view" />
         <option value="scaffold" />
         <option value="scaffold_controller" />
         <option value="stimulus" />
@@ -160,11 +196,17 @@
     <option name="myGenerators">
       <list>
         <option value="active_record:application_record" />
+        <option value="active_record:devise" />
         <option value="active_record:multi_db" />
         <option value="application_record" />
         <option value="benchmark" />
         <option value="channel" />
         <option value="controller" />
+        <option value="devise" />
+        <option value="devise:controllers" />
+        <option value="devise:install" />
+        <option value="devise:views" />
+        <option value="factory_bot:model" />
         <option value="generator" />
         <option value="helper" />
         <option value="integration_test" />
@@ -174,7 +216,25 @@
         <option value="mailer" />
         <option value="migration" />
         <option value="model" />
+        <option value="mongoid:devise" />
         <option value="resource" />
+        <option value="responders:install" />
+        <option value="responders_controller" />
+        <option value="rspec:channel" />
+        <option value="rspec:controller" />
+        <option value="rspec:feature" />
+        <option value="rspec:generator" />
+        <option value="rspec:helper" />
+        <option value="rspec:install" />
+        <option value="rspec:integration" />
+        <option value="rspec:job" />
+        <option value="rspec:mailbox" />
+        <option value="rspec:mailer" />
+        <option value="rspec:model" />
+        <option value="rspec:request" />
+        <option value="rspec:scaffold" />
+        <option value="rspec:system" />
+        <option value="rspec:view" />
         <option value="scaffold" />
         <option value="scaffold_controller" />
         <option value="stimulus" />
@@ -508,6 +568,14 @@
               <RakeTaskImpl description="Truncate all/specified *.log files in log/ to zero bytes (specify which logs with LOGS=test,development)" fullCommand="log:clear" id="clear" />
             </subtasks>
           </RakeTaskImpl>
+          <RakeTaskImpl description="Run all specs in spec directory (excluding plugin specs)" fullCommand="spec" id="spec" />
+          <RakeTaskImpl id="spec">
+            <subtasks>
+              <RakeTaskImpl description="Run the code examples in spec/models" fullCommand="spec:models" id="models" />
+              <RakeTaskImpl description="" fullCommand="spec:prepare" id="prepare" />
+              <RakeTaskImpl description="" fullCommand="spec:statsetup" id="statsetup" />
+            </subtasks>
+          </RakeTaskImpl>
           <RakeTaskImpl description="Report code statistics (KLOCs, etc) from the application or engine" fullCommand="stats" id="stats" />
           <RakeTaskImpl id="stimulus">
             <subtasks>
@@ -593,6 +661,7 @@
               <RakeTaskImpl description="Check project structure for Zeitwerk compatibility" fullCommand="zeitwerk:check" id="check" />
             </subtasks>
           </RakeTaskImpl>
+          <RakeTaskImpl description="" fullCommand="default" id="default" />
           <RakeTaskImpl description="" fullCommand="environment" id="environment" />
           <RakeTaskImpl id="railties">
             <subtasks>

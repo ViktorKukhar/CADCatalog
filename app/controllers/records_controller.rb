@@ -54,6 +54,6 @@ class RecordsController < ApplicationController
   end
 
   def record_params
-    params.require(:record).permit(:title, :description, :user_id, :tag_list, files: [], images: [])
+    params.require(:record).permit(:title, :description, :user_id, :tag_list, :software_list, files: [], images: [])
   end
 end
