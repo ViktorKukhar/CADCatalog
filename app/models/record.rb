@@ -1,4 +1,6 @@
 class Record < ApplicationRecord
+  searchkick
+
   belongs_to :user
 
   has_and_belongs_to_many :tags
@@ -8,6 +10,16 @@ class Record < ApplicationRecord
 
   validates :title, presence: true, length: { maximum: 50 }
   validates :description, presence: true, length: { maximum: 150 }
+
+  def search_data
+    {
+      name: title,
+      tags: tags.map(&:name),
+      softwares: softwares.map(&:name),
+      user_name: user.full_name,
+      user_username: user.username
+    }
+  end
 
   def tag_list=(tags_string)
     tag_names = tags_string.split(",").collect { |s| s.strip.downcase }.uniq

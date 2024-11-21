@@ -67,5 +67,7 @@ end
 
 gem 'faker'
 gem "devise", "~> 4.9"
+gem "searchkick"
 gem 'elasticsearch-model'
 gem 'elasticsearch-rails'
+gem "elasticsearch"

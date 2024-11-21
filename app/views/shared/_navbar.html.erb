@@ -37,9 +37,10 @@
             <%= link_to "#{software} ×", root_path(softwares: (params[:softwares] || []).reject { |s| s == software }, tags: params[:tags]), class: "btn btn-outline-secondary btn-sm ms-2" %>
           <% end %>
         </div>
-        <form role="search">
-          <input class="form-control" type="search" placeholder="Search" aria-label="Search">
-        </form>
+
+        <%= form_with url: root_path, method: :get, local: true do |form| %>
+          <%= form.text_field :query, placeholder: "Search", class: "form-control" %>
+        <% end %>
       </div>
     </div>
   </nav>
