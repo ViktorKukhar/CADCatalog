@@ -10,7 +10,7 @@
       </ul>
     </div>
   <% end %>
-  <div class="d-flex justify-content-center">
+  <div class="d-flex justify-content-center container">
     <div class="col-lg-5">
       <h4 class="mb-3">Create record:</h4>
       <form class="needs-validation" novalidate="">
@@ -26,18 +26,18 @@
           </div>
 
           <div class="col-md-5">
-            <label for="country" class="form-label">Upload:</label>
-            <input type="text" class="form-control" id="zip" placeholder="">
+            <%= form.label :file, class: "form-label" %>
+            <%= form.file_field :files, multiple: true, class: "form-control" %>
           </div>
 
           <div class="col-md-4">
-            <label for="state" class="form-label">Image</label>
-            <input type="text" class="form-control" id="zip" placeholder="">
+            <%= form.label :images, class: "form-label" %>
+            <%= form.file_field :images, multiple: true, class: "form-control" %>
           </div>
 
           <div class="col-md-3">
-            <label for="zip" class="form-label">Tags:</label>
-            <input type="text" class="form-control" id="zip" placeholder="">
+            <%= form.label :tag_list, class: "form-label" %>
+            <%= form.text_field :tag_list, value: @record.tags.map(&:name).join(", "), class: "form-control" %>
           </div>
         </div>
 

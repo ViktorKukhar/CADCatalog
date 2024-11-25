@@ -1,0 +1,12 @@
+<div class="mb-5">
+  <div class="p-5 bg-body-tertiary">
+    <div class="container py-5 d-flex justify-content-start align-items-center">
+        <%= image_tag @user.avatar %>
+      <div class="ms-4">
+        <p class="mb-0 fs-1"><%= @user.full_name %></p>
+        <p class="text-body-secondary fs-4 fw-lighter"><%= @user.position %></p>
+      </div>
+    </div>
+  </div>
+</div>
+<%= render partial: "shared/album" %>

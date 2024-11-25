@@ -4,10 +4,9 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable, :validatable
 
   has_many :records, dependent: :destroy
+  has_one_attached :avatar
 
-
-  validates :username, presence: true,
-            length: { minimum: 3, maximum: 50 },
-            uniqueness: true,
-            format: { with: /\A[a-zA-Z0-9_]+\z/ }
+  def full_name
+    "#{self.first_name} #{self.last_name}"
+  end
 end
