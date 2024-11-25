@@ -110,6 +110,7 @@
     <orderEntry type="library" scope="PROVIDED" name="rspec-mocks (v3.13.2, asdf: 3.3.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rspec-rails (v6.0.4, asdf: 3.3.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rspec-support (v3.13.1, asdf: 3.3.2) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="searchkick (v5.4.0, asdf: 3.3.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="securerandom (v0.3.2, asdf: 3.3.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="sprockets (v4.2.1, asdf: 3.3.2) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="sprockets-rails (v3.5.2, asdf: 3.3.2) [gem]" level="application" />
@@ -566,6 +567,16 @@
           <RakeTaskImpl id="log">
             <subtasks>
               <RakeTaskImpl description="Truncate all/specified *.log files in log/ to zero bytes (specify which logs with LOGS=test,development)" fullCommand="log:clear" id="clear" />
+            </subtasks>
+          </RakeTaskImpl>
+          <RakeTaskImpl id="searchkick">
+            <subtasks>
+              <RakeTaskImpl description="reindex a model (specify CLASS)" fullCommand="searchkick:reindex" id="reindex" />
+              <RakeTaskImpl id="reindex">
+                <subtasks>
+                  <RakeTaskImpl description="reindex all models" fullCommand="searchkick:reindex:all" id="all" />
+                </subtasks>
+              </RakeTaskImpl>
             </subtasks>
           </RakeTaskImpl>
           <RakeTaskImpl description="Run all specs in spec directory (excluding plugin specs)" fullCommand="spec" id="spec" />

@@ -1,6 +1,11 @@
 class HomeController < ApplicationController
   def index
-    @records = filter_records(params[:tags], params[:softwares])
+
+    if params[:query].present?
+      @records = Record.search(params[:query])
+    else
+      @records = filter_records(params[:tags], params[:softwares])
+    end
   end
 
   private
