@@ -13,6 +13,8 @@ class Record < ApplicationRecord
   validates :width, :height, :depth, numericality: { greater_than: 0 }, allow_nil: true
   validates :rotation_angle, numericality: { greater_than_or_equal_to: 0, less_than: 360 }, allow_nil: true
 
+  # Data sanitization callbacks - ensures all user input is safe from XSS and injection attacks
+  before_validation :sanitize_input_data
   # Callback to calculate complexity score whenever dimensions change
   before_save :calculate_complexity_score
 
@@ -148,3 +150,14 @@ class Record < ApplicationRecord
     Math.atan(angle_diff)  # Final arctangent smoothing for smooth transition
   end
 
+  private
+
+  # Sanitizes all user input to prevent XSS and injection attacks
+  # Uses Rails framework sanitization helpers
+  def sanitize_input_data
+    # Sanitize text fields to prevent XSS
+    # Uses DataSanitizer service which leverages Rails' ActionController::Base.helpers.sanitize
+    self.title = DataSanitizer.sanitize_text(title) if title.present?
+    self.description = DataSanitizer.sanitize_html(description, %w[p br strong em]) if description.present?
+  end
+end

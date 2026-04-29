@@ -5,6 +5,8 @@ class Software < ApplicationRecord
   validates :performance_rating, :efficiency_score, :processing_factor, 
             numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
 
+  # Data sanitization callbacks - ensures all user input is safe from XSS and injection attacks
+  before_validation :sanitize_input_data
   before_save :calculate_performance_metrics
 
   # Calculates efficiency using logarithmic scale
@@ -119,6 +121,14 @@ class Software < ApplicationRecord
     if processing_factor.nil?
       calculate_processing_factor(0)
     end
+  end
+
+  # Sanitizes all user input to prevent XSS and injection attacks
+  # Uses Rails framework sanitization helpers via DataSanitizer service
+  def sanitize_input_data
+    # Sanitize software name to prevent XSS and injection
+    # Only allows safe alphanumeric characters and common symbols
+    self.name = DataSanitizer.sanitize_text(name) if name.present?
   end
 end
 
