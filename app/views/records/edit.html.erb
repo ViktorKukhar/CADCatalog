@@ -6,15 +6,20 @@
       <ol class="breadcrumb mb-0">
         <li class="breadcrumb-item"><%= link_to 'Home', root_path %></li>
         <li class="breadcrumb-item"><%= link_to 'Records', records_path %></li>
-        <li class="breadcrumb-item active">Create New</li>
+        <li class="breadcrumb-item"><%= link_to @record.title, record_path(@record) %></li>
+        <li class="breadcrumb-item active">Edit</li>
       </ol>
     </nav>
   </div>
 </div>
 
 <div class="py-5 text-center container">
-  <img class="d-block mx-auto mb-4" src="/docs/5.3/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
-  <h2>Upload New Record:</h2>
-  <p class="lead">Fill in the form below to create and upload a new CAD record. You can add files, images, tags, and software information.</p>
+  <h2>Edit Record:</h2>
+  <p class="lead">Update the record details, files, and metadata below.</p>
 </div>
+
 <%= render "records/partials/form", record: @record %>
+
+<div class="container mt-4">
+  <%= link_to 'Back to Record', record_path(@record), class: 'btn btn-secondary' %>
+</div>

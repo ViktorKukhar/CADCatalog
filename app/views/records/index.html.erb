@@ -1,20 +1,53 @@
 <p style="color: green"><%= notice %></p>
-<h1>Records for u tags:</h1>
 
-<% if @tag %>
-  <h2><%= @tag.name %></h2>
-<% else %>
-  <h2>All Records</h2>
-<% end %>
+<!-- Page Title using Navigation System -->
+<div class="page-header mb-4">
+  <% if @tag %>
+    <h1>Records Tagged: <%= @tag.name %></h1>
+  <% elsif params[:filter] == 'my' %>
+    <h1>My Records</h1>
+  <% else %>
+    <h1>All Records</h1>
+  <% end %>
+  <p class="text-muted"><%= @records.count %> record<%= 's' if @records.count != 1 %> found</p>
+</div>
+
+<!-- Add New Record Button -->
+<div class="mb-3">
+  <%= link_to 'Create New Record', new_record_path, class: 'btn btn-primary' %>
+</div>
 
 <div class="album py-5 bg-body-tertiary">
-  <div class="container ">
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3">
-
-      <% @records.each do |record| %>
-        <%= render record %>
-      <% end %>
-
-    </div>
+  <div class="container">
+    <% if @records.any? %>
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3">
+        <% @records.each do |record| %>
+          <%= render record %>
+        <% end %>
+      </div>
+      
+      <!-- Pagination Navigation -->
+      <nav aria-label="Page navigation" class="mt-5">
+        <ul class="pagination justify-content-center">
+          <li class="page-item <%= 'disabled' if @records.first_page? %>">
+            <%= link_to 'Previous', records_path(page: @records.current_page - 1), class: 'page-link' unless @records.first_page? %>
+          </li>
+          
+          <% (1..@records.total_pages).each do |page| %>
+            <li class="page-item <%= 'active' if page == @records.current_page %>">
+              <%= link_to page, records_path(page: page), class: 'page-link' %>
+            </li>
+          <% end %>
+          
+          <li class="page-item <%= 'disabled' if @records.last_page? %>">
+            <%= link_to 'Next', records_path(page: @records.current_page + 1), class: 'page-link' unless @records.last_page? %>
+          </li>
+        </ul>
+      </nav>
+    <% else %>
+      <div class="alert alert-info">
+        No records found. <%= link_to 'Create your first record', new_record_path, class: 'alert-link' %>
+      </div>
+    <% end %>
   </div>
 </div>
