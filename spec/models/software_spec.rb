@@ -175,4 +175,67 @@ describe Software do
       expect(result[:quality_factor]).to be > 0
     end
   end
+
+  describe 'Data Sanitization - XSS Prevention' do
+    it 'sanitizes software name on save to prevent XSS' do
+      malicious_name = '<script>alert("xss")</script>Photoshop'
+      software = build(:software, name: malicious_name)
+      software.save!
+      
+      # Name should be sanitized
+      expect(software.reload.name).not_to include('<script>')
+    end
+
+    it 'strips whitespace from name' do
+      name_with_spaces = '  AutoCAD  '
+      software = build(:software, name: name_with_spaces)
+      software.save!
+      
+      expect(software.reload.name).to eq('AutoCAD')
+    end
+
+    it 'sanitizes when updating software' do
+      software.update(name: 'Blender<img src=x onerror="alert(1)">')
+      
+      expect(software.reload.name).not_to include('onerror')
+    end
+
+    it 'removes event handler attempts from name' do
+      malicious = 'SolidWorks" onclick="alert(1)'
+      software = build(:software, name: malicious)
+      software.save!
+      
+      expect(software.reload.name).not_to include('onclick')
+    end
+  end
+
+  describe 'Data Sanitization - Input Validation' do
+    it 'enforces uniqueness even with sanitized input' do
+      software1 = create(:software, name: 'CAD Tool')
+      
+      software2 = build(:software, name: 'CAD Tool')
+      
+      expect { software2.save! }.to raise_error(ActiveRecord::RecordInvalid)
+    end
+
+    it 'allows valid software names after sanitization' do
+      valid_names = ['PhotoShop', 'AutoCAD 2024', 'SolidWorks-Pro', 'Fusion_360']
+      
+      valid_names.each do |name|
+        software = build(:software, name: name)
+        expect(software.valid?).to be_truthy
+      end
+    end
+  end
+
+  describe 'Data Sanitization - SQL Injection Prevention' do
+    it 'prevents SQL injection through software name' do
+      injection_attempt = "Tool'; DROP TABLE softwares; --"
+      software = build(:software, name: injection_attempt)
+      software.save!
+      
+      # Malicious input should be sanitized/escaped
+      expect(software.reload.name).not_to include(';')
+    end
+  end
 end

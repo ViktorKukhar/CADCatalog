@@ -4,8 +4,16 @@ class RecordsController < ApplicationController
 
   def index
     if params[:tag]
-      @records = Record.joins(:tags).where(tags: { name: params[:tag] }).distinct
-      @tag = Tag.find_by(name: params[:tag])
+      # Sanitize tag parameter to prevent SQL injection and XSS attacks
+      # Uses DataSanitizer to clean user input before database query
+      sanitized_tag = DataSanitizer.sanitize_tag(params[:tag])
+      
+      if sanitized_tag.present?
+        @records = Record.joins(:tags).where(tags: { name: sanitized_tag }).distinct
+        @tag = Tag.find_by(name: sanitized_tag)
+      else
+        @records = Record.all
+      end
     else
       @records = Record.all
     end
