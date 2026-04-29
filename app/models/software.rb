@@ -1,6 +1,16 @@
 class Software < ApplicationRecord
   has_and_belongs_to_many :records
 
+  # Aggregation scopes - enable efficient database-level grouping and calculations
+  scope :with_performance, -> { where.not(performance_rating: nil) }
+  scope :with_efficiency, -> { where.not(efficiency_score: nil) }
+  scope :by_performance, -> { order(performance_rating: :desc) }
+  scope :by_efficiency, -> { order(efficiency_score: :desc) }
+  scope :high_performance, ->(threshold = 5) { where('performance_rating >= ?', threshold) }
+  scope :low_performance, ->(threshold = 2) { where('performance_rating < ?', threshold) }
+  scope :most_used, -> { joins(:records).group('softwares.id').order('COUNT(records.id) DESC') }
+  scope :by_creation_date, -> { order(created_at: :desc) }
+
   validates :name, presence: true, uniqueness: true
   validates :performance_rating, :efficiency_score, :processing_factor, 
             numericality: { greater_than_or_equal_to: 0 }, allow_nil: true

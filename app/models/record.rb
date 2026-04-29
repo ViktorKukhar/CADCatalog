@@ -8,6 +8,17 @@ class Record < ApplicationRecord
   has_many_attached :files
   has_many_attached :images
 
+  # Aggregation scopes - enable efficient database-level grouping and calculations
+  scope :with_dimensions, -> { where.not(width: nil, height: nil, depth: nil) }
+  scope :with_complexity, -> { where.not(complexity_score: nil) }
+  scope :by_creation_date, -> { order(created_at: :desc) }
+  scope :by_complexity, -> { order(complexity_score: :desc) }
+  scope :high_complexity, ->(threshold = 5) { where('complexity_score >= ?', threshold) }
+  scope :low_complexity, ->(threshold = 2) { where('complexity_score < ?', threshold) }
+  scope :with_tag, ->(tag_name) { joins(:tags).where(tags: { name: tag_name }) }
+  scope :with_software, ->(software_name) { joins(:softwares).where(softwares: { name: software_name }) }
+  scope :by_user, ->(user_id) { where(user_id: user_id) }
+
   validates :title, presence: true, length: { maximum: 50 }
   validates :description, presence: true, length: { maximum: 150 }
   validates :width, :height, :depth, numericality: { greater_than: 0 }, allow_nil: true
