@@ -1,4 +1,6 @@
 module ApplicationHelper
+  include NavigationHelper
+
   def all_tags
     Tag.all
   end
