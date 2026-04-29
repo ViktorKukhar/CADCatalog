@@ -1,10 +1,42 @@
 <%= render "records/partials/carousel", record: @record %>
+
+<!-- Page Navigation Context -->
+<div class="breadcrumb-section bg-light py-2 mb-4">
+  <div class="container-sm">
+    <% builder = NavigationBuilder.new(current_user, request) %>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-0">
+        <% builder.breadcrumbs.each do |crumb| %>
+          <li class="breadcrumb-item <%= 'active' if crumb[:current] %>">
+            <% if crumb[:current] %>
+              <%= crumb[:label] %>
+            <% else %>
+              <%= link_to crumb[:label], crumb[:path] %>
+            <% end %>
+          </li>
+        <% end %>
+      </ol>
+    </nav>
+  </div>
+</div>
+
 <div class="container-sm pt-5">
   <div class="row g-5">
     <div class="col-md-8">
-      <h3 class="pb-4 mb-4 border-bottom">
-        <%= @record.title %>
-      </h3>
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="pb-4 mb-0 border-bottom flex-grow-1">
+          <%= @record.title %>
+        </h3>
+        
+        <!-- Record Actions Navigation -->
+        <div class="ms-3 btn-group" role="group">
+          <% if user_signed_in? && current_user.id == @record.user_id %>
+            <%= link_to 'Edit', edit_record_path(@record), class: 'btn btn-sm btn-outline-primary' %>
+            <%= button_to 'Delete', record_path(@record), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-outline-danger' %>
+          <% end %>
+        </div>
+      </div>
+      
       <div>
         <%= @record.description %>
       </div>
@@ -26,7 +58,11 @@
           </div>
           <div class="row">
             <div class="col-4"><strong>Tags:</strong></div>
-            <div class="col-6"><%= @record.tag_list %></div>
+            <div class="col-6">
+              <% @record.tags.each do |tag| %>
+                <%= link_to tag.name, records_path(tag: tag.name), class: 'badge bg-secondary text-decoration-none me-1' %>
+              <% end %>
+            </div>
           </div>
         </div>
 
