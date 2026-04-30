@@ -1,0 +1,173 @@
+<div class="container-fluid py-4">
+  <div class="page-header mb-4">
+    <h1>Complexity Analysis</h1>
+    <p class="text-muted">Analyze CAD model complexity distribution and patterns</p>
+  </div>
+
+  <!-- Complexity Distribution Cards -->
+  <div class="row mb-4">
+    <div class="col-md-12 mb-3">
+      <div class="card border-0 shadow-sm">
+        <div class="card-header bg-light">
+          <h5 class="mb-0">Complexity Score Distribution</h5>
+        </div>
+        <div class="card-body">
+          <% if @complexity_distribution.any? %>
+            <div class="row">
+              <% @complexity_distribution.each do |bucket| %>
+                <div class="col-md-2 col-sm-4 mb-3">
+                  <div class="complexity-bucket text-center p-3 border rounded">
+                    <h5 class="mb-2">
+                      <span class="badge bg-primary"><%= bucket[:range] %></span>
+                    </h5>
+                    <h3 class="text-primary"><%= bucket[:count] %></h3>
+                    <small class="text-muted">records</small>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <p class="text-muted">No complexity data available</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Average Dimensions by Tag -->
+  <div class="row mb-4">
+    <div class="col-md-12 mb-3">
+      <div class="card border-0 shadow-sm">
+        <div class="card-header bg-light">
+          <h5 class="mb-0">Complexity by Category (Tags)</h5>
+        </div>
+        <div class="card-body">
+          <% if @average_dimensions_by_tag.any? %>
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead class="table-light">
+                  <tr>
+                    <th>Category (Tag)</th>
+                    <th>Records</th>
+                    <th>Avg Width</th>
+                    <th>Avg Height</th>
+                    <th>Avg Depth</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @average_dimensions_by_tag.each do |tag| %>
+                    <tr>
+                      <td><strong><%= tag[:name] %></strong></td>
+                      <td><span class="badge bg-secondary"><%= tag[:count] %></span></td>
+                      <td><%= tag[:width] %> mm</td>
+                      <td><%= tag[:height] %> mm</td>
+                      <td><%= tag[:depth] %> mm</td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          <% else %>
+            <p class="text-muted">No category data available</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Most Complex Records -->
+  <div class="row mb-4">
+    <div class="col-md-6 mb-3">
+      <div class="card border-0 shadow-sm">
+        <div class="card-header bg-light">
+          <h5 class="mb-0">Most Complex Records</h5>
+        </div>
+        <div class="card-body" style="max-height: 400px; overflow-y: auto;">
+          <% if @most_complex.any? %>
+            <div class="list-group list-group-flush">
+              <% @most_complex.each do |record| %>
+                <div class="list-group-item d-flex justify-content-between align-items-center">
+                  <div>
+                    <strong><%= record.title %></strong>
+                    <br>
+                    <small class="text-muted">by <%= record.user.full_name %></small>
+                  </div>
+                  <span class="badge bg-danger"><%= record.complexity_score&.round(2) %></span>
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <p class="text-muted">No records available</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <div class="card border-0 shadow-sm">
+        <div class="card-header bg-light">
+          <h5 class="mb-0">Least Complex Records</h5>
+        </div>
+        <div class="card-body" style="max-height: 400px; overflow-y: auto;">
+          <% if @least_complex.any? %>
+            <div class="list-group list-group-flush">
+              <% @least_complex.each do |record| %>
+                <div class="list-group-item d-flex justify-content-between align-items-center">
+                  <div>
+                    <strong><%= record.title %></strong>
+                    <br>
+                    <small class="text-muted">by <%= record.user.full_name %></small>
+                  </div>
+                  <span class="badge bg-success"><%= record.complexity_score&.round(2) %></span>
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <p class="text-muted">No records available</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Back to Dashboard -->
+  <div class="row">
+    <div class="col-md-12">
+      <%= link_to "← Back to Dashboard", reports_dashboard_path, class: "btn btn-outline-primary" %>
+    </div>
+  </div>
+</div>
+
+<style>
+  .complexity-bucket {
+    background-color: #f8f9fa;
+    transition: all 0.2s ease;
+  }
+
+  .complexity-bucket:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+  }
+
+  .list-group-item {
+    border-left: 3px solid #e9ecef;
+  }
+
+  .list-group-item:hover {
+    border-left-color: #0d6efd;
+    background-color: #f8f9fa;
+  }
+
+  .table-hover tbody tr:hover {
+    background-color: #f8f9fa;
+  }
+
+  .card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.15) !important;
+  }
+</style>

@@ -1,0 +1,117 @@
+<div class="container-fluid py-4">
+  <div class="page-header mb-4">
+    <h1>Tags Analysis</h1>
+    <p class="text-muted">Tag distribution and co-occurrence patterns</p>
+  </div>
+
+  <!-- Statistics Cards -->
+  <div class="row mb-4">
+    <div class="col-md-3 col-sm-6 mb-3">
+      <div class="card border-0 shadow-sm bg-light">
+        <div class="card-body">
+          <h6 class="text-muted">Total Tags</h6>
+          <h3><%= @tag_distribution[:total_tags] %></h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6 mb-3">
+      <div class="card border-0 shadow-sm bg-light">
+        <div class="card-body">
+          <h6 class="text-muted">Total Associations</h6>
+          <h3><%= @tag_distribution[:total_associations] %></h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6 mb-3">
+      <div class="card border-0 shadow-sm bg-light">
+        <div class="card-body">
+          <h6 class="text-muted">Avg per Tag</h6>
+          <h3><%= @tag_distribution[:avg_records_per_tag] %></h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6 mb-3">
+      <div class="card border-0 shadow-sm bg-light">
+        <div class="card-body">
+          <h6 class="text-muted">Avg per Record</h6>
+          <h3><%= @tag_distribution[:avg_tags_per_record] %></h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Records by Tag -->
+  <div class="row mb-4">
+    <div class="col-md-6 mb-3">
+      <div class="card border-0 shadow-sm">
+        <div class="card-header bg-light">
+          <h5 class="mb-0">Records by Tag</h5>
+        </div>
+        <div class="card-body" style="max-height: 500px; overflow-y: auto;">
+          <% if @records_by_tag.any? %>
+            <div class="list-group list-group-flush">
+              <% @records_by_tag.each do |tag| %>
+                <div class="list-group-item d-flex justify-content-between align-items-center">
+                  <strong><%= tag[:name] %></strong>
+                  <span class="badge bg-primary"><%= tag[:count] %> records</span>
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <p class="text-muted">No tags available</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <div class="card border-0 shadow-sm">
+        <div class="card-header bg-light">
+          <h5 class="mb-0">Tag Co-Occurrence (Tags that appear together)</h5>
+        </div>
+        <div class="card-body" style="max-height: 500px; overflow-y: auto;">
+          <% if @tag_cooccurrence.any? %>
+            <div class="list-group list-group-flush">
+              <% @tag_cooccurrence.each do |cooc| %>
+                <div class="list-group-item d-flex justify-content-between align-items-center">
+                  <span><strong><%= cooc[:tag1] %></strong> + <strong><%= cooc[:tag2] %></strong></span>
+                  <span class="badge bg-info"><%= cooc[:count] %></span>
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <p class="text-muted">No tag co-occurrence data</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Back to Dashboard -->
+  <div class="row">
+    <div class="col-md-12">
+      <%= link_to "← Back to Dashboard", reports_dashboard_path, class: "btn btn-outline-primary" %>
+    </div>
+  </div>
+</div>
+
+<style>
+  .list-group-item {
+    border-left: 3px solid #e9ecef;
+    transition: all 0.2s ease;
+  }
+
+  .list-group-item:hover {
+    border-left-color: #0d6efd;
+    background-color: #f8f9fa;
+  }
+
+  .card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.15) !important;
+  }
+</style>

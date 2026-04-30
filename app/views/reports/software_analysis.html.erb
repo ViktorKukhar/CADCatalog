@@ -1,0 +1,122 @@
+<div class="container-fluid py-4">
+  <div class="page-header mb-4">
+    <h1>Software Analysis</h1>
+    <p class="text-muted">Performance metrics and usage statistics for software tools</p>
+  </div>
+
+  <!-- Statistics Cards -->
+  <div class="row mb-4">
+    <div class="col-md-3 col-sm-6 mb-3">
+      <div class="card border-0 shadow-sm bg-light">
+        <div class="card-body">
+          <h6 class="text-muted">Total Software</h6>
+          <h3><%= @software_stats[:total_count] %></h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6 mb-3">
+      <div class="card border-0 shadow-sm bg-light">
+        <div class="card-body">
+          <h6 class="text-muted">Avg Rating</h6>
+          <h3><%= @software_stats[:avg_rating] %>/10</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6 mb-3">
+      <div class="card border-0 shadow-sm bg-light">
+        <div class="card-body">
+          <h6 class="text-muted">Max Rating</h6>
+          <h3><%= @software_stats[:max_rating] %></h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6 mb-3">
+      <div class="card border-0 shadow-sm bg-light">
+        <div class="card-body">
+          <h6 class="text-muted">Avg Efficiency</h6>
+          <h3><%= @software_stats[:avg_efficiency] %></h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Software Usage Frequency -->
+  <div class="row mb-4">
+    <div class="col-md-12 mb-3">
+      <div class="card border-0 shadow-sm">
+        <div class="card-header bg-light">
+          <h5 class="mb-0">Software Usage Frequency</h5>
+        </div>
+        <div class="card-body">
+          <% if @software_usage.any? %>
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead class="table-light">
+                  <tr>
+                    <th>Software Name</th>
+                    <th>Usage Count</th>
+                    <th>Percentage</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% total_usage = @software_usage.sum { |s| s[:count] } %>
+                  <% @software_usage.each do |software| %>
+                    <% percentage = (software[:count].to_f / total_usage * 100).round(1) %>
+                    <tr>
+                      <td><strong><%= software[:name] %></strong></td>
+                      <td><span class="badge bg-primary"><%= software[:count] %></span></td>
+                      <td>
+                        <div class="progress" style="height: 20px;">
+                          <div class="progress-bar" role="progressbar" 
+                               style="width: <%= percentage %>%;" 
+                               aria-valuenow="<%= percentage %>" 
+                               aria-valuemin="0" 
+                               aria-valuemax="100">
+                            <%= percentage %>%
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          <% else %>
+            <p class="text-muted">No software data available</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Back to Dashboard -->
+  <div class="row">
+    <div class="col-md-12">
+      <%= link_to "← Back to Dashboard", reports_dashboard_path, class: "btn btn-outline-primary" %>
+    </div>
+  </div>
+</div>
+
+<style>
+  .progress-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: white;
+  }
+
+  .table-hover tbody tr:hover {
+    background-color: #f8f9fa;
+  }
+
+  .card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.15) !important;
+  }
+</style>

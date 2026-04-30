@@ -5,8 +5,26 @@ class Record < ApplicationRecord
 
   has_and_belongs_to_many :tags
   has_and_belongs_to_many :softwares
+  has_and_belongs_to_many :categories
+  has_and_belongs_to_many :collections
+  has_many :record_versions, dependent: :destroy
+  has_many :user_reviews, dependent: :destroy
   has_many_attached :files
   has_many_attached :images
+
+  # Aggregation scopes - enable efficient database-level grouping and calculations
+  scope :with_dimensions, -> { where.not(width: nil, height: nil, depth: nil) }
+  scope :with_complexity, -> { where.not(complexity_score: nil) }
+  scope :by_creation_date, -> { order(created_at: :desc) }
+  scope :by_complexity, -> { order(complexity_score: :desc) }
+  scope :high_complexity, ->(threshold = 5) { where('complexity_score >= ?', threshold) }
+  scope :low_complexity, ->(threshold = 2) { where('complexity_score < ?', threshold) }
+  scope :with_tag, ->(tag_name) { joins(:tags).where(tags: { name: tag_name }) }
+  scope :with_software, ->(software_name) { joins(:softwares).where(softwares: { name: software_name }) }
+  scope :by_user, ->(user_id) { where(user_id: user_id) }
+  scope :with_category, ->(category_name) { joins(:categories).where(categories: { name: category_name }) }
+  scope :in_collection, ->(collection_id) { joins(:collections).where(collections: { id: collection_id }) }
+  scope :highly_rated, ->(threshold = 4) { joins(:user_reviews).group('records.id').having('AVG(user_reviews.rating) >= ?', threshold) }
 
   validates :title, presence: true, length: { maximum: 50 }
   validates :description, presence: true, length: { maximum: 150 }
@@ -28,10 +46,17 @@ class Record < ApplicationRecord
     }
   end
 
+  # Each list= method wraps all find-or-create calls and the join-table assignment
+  # in a single transaction. Without this, a failure mid-loop would leave newly
+  # created records (tags / softwares / categories) in the DB while the association
+  # on this record remains incomplete — a silent integrity violation.
+  # find_or_create_by! (bang) raises on validation failure, triggering rollback.
+
   def tag_list=(tags_string)
-    tag_names = tags_string.split(",").collect { |s| s.strip.downcase }.uniq
-    new_or_found_tags = tag_names.collect { |name| Tag.find_or_create_by(name: name) }
-    self.tags = new_or_found_tags
+    self.class.transaction do
+      tag_names = tags_string.split(",").collect { |s| s.strip.downcase }.uniq
+      self.tags = tag_names.collect { |name| Tag.find_or_create_by!(name: name) }
+    end
   end
 
   def tag_list
@@ -39,13 +64,33 @@ class Record < ApplicationRecord
   end
 
   def software_list=(softwares_string)
-    software_names = softwares_string.split(",").collect { |s| s.strip.downcase }.uniq
-    new_or_found_softwares = software_names.collect { |name| Software.find_or_create_by(name: name) }
-    self.softwares = new_or_found_softwares
+    self.class.transaction do
+      software_names = softwares_string.split(",").collect { |s| s.strip.downcase }.uniq
+      self.softwares = software_names.collect { |name| Software.find_or_create_by!(name: name) }
+    end
   end
 
   def software_list
     self.softwares.map(&:name).join(", ")
+  end
+
+  def category_list=(categories_string)
+    self.class.transaction do
+      category_names = categories_string.split(",").collect { |s| s.strip }.uniq
+      self.categories = category_names.collect { |name| Category.find_or_create_by!(name: name) }
+    end
+  end
+
+  def category_list
+    self.categories.map(&:name).join(", ")
+  end
+
+  def average_rating
+    UserReview.average_rating_for(id)
+  end
+
+  def latest_version
+    record_versions.order(created_at: :desc).first
   end
 
   # Calculates the 3D volume using all dimensions
