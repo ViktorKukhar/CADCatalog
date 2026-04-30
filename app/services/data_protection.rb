@@ -74,6 +74,21 @@ class DataProtection
     ActiveSupport::SecurityUtils.secure_compare(sign(data, secret: secret), signature)
   end
 
+  # Bang variants — raise custom domain exceptions instead of returning false.
+  # Use in service pipelines where a failed check must halt execution.
+
+  # Raises ChecksumMismatchError if the checksum does not match.
+  def self.verify_checksum!(data, expected_checksum)
+    raise ChecksumMismatchError unless verify_checksum(data, expected_checksum)
+    true
+  end
+
+  # Raises TamperedDataError if the HMAC signature does not verify.
+  def self.verify_signature!(data, signature, secret: Rails.application.secret_key_base)
+    raise TamperedDataError unless verify_signature(data, signature, secret: secret)
+    true
+  end
+
   # --- Secure token generation ---
 
   # Returns a cryptographically random hex string of the given byte length.
