@@ -1,4 +1,9 @@
 class UserReview < ApplicationRecord
+  include Auditable
+
+  # Comment is private user opinion — encrypted at rest.
+  encrypts :comment
+
   belongs_to :record
   belongs_to :user
 

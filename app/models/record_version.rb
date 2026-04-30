@@ -1,4 +1,9 @@
 class RecordVersion < ApplicationRecord
+  include Auditable
+
+  # Change log may contain sensitive methodology or IP notes — encrypted at rest.
+  encrypts :change_log
+
   belongs_to :record
   belongs_to :user
 

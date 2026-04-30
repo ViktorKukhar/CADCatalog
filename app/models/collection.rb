@@ -1,4 +1,9 @@
 class Collection < ApplicationRecord
+  include Auditable
+
+  # Description may contain proprietary project context — encrypted at rest.
+  encrypts :description
+
   belongs_to :user
   has_and_belongs_to_many :records
 

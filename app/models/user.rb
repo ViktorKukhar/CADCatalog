@@ -1,7 +1,16 @@
 class User < ApplicationRecord
+  include Auditable
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable, :validatable
+
+  # PII fields encrypted at rest via ActiveRecord::Encryption.
+  # Decryption is transparent on read; Devise email is excluded because
+  # it is used as a lookup key for authentication (requires deterministic encryption).
+  encrypts :first_name
+  encrypts :last_name
+  encrypts :position
 
   has_many :records, dependent: :destroy
   has_many :collections, dependent: :destroy
