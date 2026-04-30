@@ -46,10 +46,17 @@ class Record < ApplicationRecord
     }
   end
 
+  # Each list= method wraps all find-or-create calls and the join-table assignment
+  # in a single transaction. Without this, a failure mid-loop would leave newly
+  # created records (tags / softwares / categories) in the DB while the association
+  # on this record remains incomplete — a silent integrity violation.
+  # find_or_create_by! (bang) raises on validation failure, triggering rollback.
+
   def tag_list=(tags_string)
-    tag_names = tags_string.split(",").collect { |s| s.strip.downcase }.uniq
-    new_or_found_tags = tag_names.collect { |name| Tag.find_or_create_by(name: name) }
-    self.tags = new_or_found_tags
+    self.class.transaction do
+      tag_names = tags_string.split(",").collect { |s| s.strip.downcase }.uniq
+      self.tags = tag_names.collect { |name| Tag.find_or_create_by!(name: name) }
+    end
   end
 
   def tag_list
@@ -57,9 +64,10 @@ class Record < ApplicationRecord
   end
 
   def software_list=(softwares_string)
-    software_names = softwares_string.split(",").collect { |s| s.strip.downcase }.uniq
-    new_or_found_softwares = software_names.collect { |name| Software.find_or_create_by(name: name) }
-    self.softwares = new_or_found_softwares
+    self.class.transaction do
+      software_names = softwares_string.split(",").collect { |s| s.strip.downcase }.uniq
+      self.softwares = software_names.collect { |name| Software.find_or_create_by!(name: name) }
+    end
   end
 
   def software_list
@@ -67,9 +75,10 @@ class Record < ApplicationRecord
   end
 
   def category_list=(categories_string)
-    category_names = categories_string.split(",").collect { |s| s.strip }.uniq
-    new_or_found_categories = category_names.collect { |name| Category.find_or_create_by(name: name) }
-    self.categories = new_or_found_categories
+    self.class.transaction do
+      category_names = categories_string.split(",").collect { |s| s.strip }.uniq
+      self.categories = category_names.collect { |name| Category.find_or_create_by!(name: name) }
+    end
   end
 
   def category_list
