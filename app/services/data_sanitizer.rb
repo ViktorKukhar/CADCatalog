@@ -193,6 +193,14 @@ class DataSanitizer
     sanitized =~ /\Av?\d+(\.\d+){0,2}\z/ ? sanitized : nil
   end
 
+  # Bang variant — raises SanitizationError instead of returning nil.
+  # Use when an invalid version number should halt execution rather than silently fail.
+  def self.sanitize_version_number!(input)
+    result = sanitize_version_number(input)
+    raise SanitizationError.new(:version_number, input) if result.nil?
+    result
+  end
+
   # Batch sanitizes a hash of parameters
   # Useful for processing entire request parameter sets
   def self.sanitize_params(params_hash, sanitization_rules = {})

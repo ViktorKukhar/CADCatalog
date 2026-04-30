@@ -18,6 +18,24 @@ class DataPrivacy
 
   # --- Access control ---
 
+  # Bang variants — raise custom exceptions instead of returning false.
+  # Use these in service methods and controllers where a denied check should
+  # halt execution immediately with a descriptive domain error.
+
+  # Raises UnauthorizedError when user is nil, AccessDeniedError when can_read? is false.
+  def self.authorize_read!(requesting_user, resource)
+    raise UnauthorizedError if requesting_user.nil?
+    raise AccessDeniedError.new(resource.class.name) unless can_read?(requesting_user, resource)
+    true
+  end
+
+  # Raises UnauthorizedError when user is nil, AccessDeniedError when can_modify? is false.
+  def self.authorize_modify!(requesting_user, resource)
+    raise UnauthorizedError if requesting_user.nil?
+    raise AccessDeniedError.new(resource.class.name) unless can_modify?(requesting_user, resource)
+    true
+  end
+
   # Returns true if requesting_user may view the resource in full.
   def self.can_read?(requesting_user, resource)
     return false if requesting_user.nil?
