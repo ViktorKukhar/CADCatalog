@@ -4,6 +4,9 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable, :validatable
 
   has_many :records, dependent: :destroy
+  has_many :collections, dependent: :destroy
+  has_many :user_reviews, dependent: :destroy
+  has_many :record_versions, dependent: :destroy
   has_one_attached :avatar
 
   # Data sanitization callbacks - ensures all user input is safe from XSS and injection attacks

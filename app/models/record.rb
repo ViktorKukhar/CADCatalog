@@ -5,6 +5,10 @@ class Record < ApplicationRecord
 
   has_and_belongs_to_many :tags
   has_and_belongs_to_many :softwares
+  has_and_belongs_to_many :categories
+  has_and_belongs_to_many :collections
+  has_many :record_versions, dependent: :destroy
+  has_many :user_reviews, dependent: :destroy
   has_many_attached :files
   has_many_attached :images
 
@@ -18,6 +22,9 @@ class Record < ApplicationRecord
   scope :with_tag, ->(tag_name) { joins(:tags).where(tags: { name: tag_name }) }
   scope :with_software, ->(software_name) { joins(:softwares).where(softwares: { name: software_name }) }
   scope :by_user, ->(user_id) { where(user_id: user_id) }
+  scope :with_category, ->(category_name) { joins(:categories).where(categories: { name: category_name }) }
+  scope :in_collection, ->(collection_id) { joins(:collections).where(collections: { id: collection_id }) }
+  scope :highly_rated, ->(threshold = 4) { joins(:user_reviews).group('records.id').having('AVG(user_reviews.rating) >= ?', threshold) }
 
   validates :title, presence: true, length: { maximum: 50 }
   validates :description, presence: true, length: { maximum: 150 }
@@ -57,6 +64,24 @@ class Record < ApplicationRecord
 
   def software_list
     self.softwares.map(&:name).join(", ")
+  end
+
+  def category_list=(categories_string)
+    category_names = categories_string.split(",").collect { |s| s.strip }.uniq
+    new_or_found_categories = category_names.collect { |name| Category.find_or_create_by(name: name) }
+    self.categories = new_or_found_categories
+  end
+
+  def category_list
+    self.categories.map(&:name).join(", ")
+  end
+
+  def average_rating
+    UserReview.average_rating_for(id)
+  end
+
+  def latest_version
+    record_versions.order(created_at: :desc).first
   end
 
   # Calculates the 3D volume using all dimensions

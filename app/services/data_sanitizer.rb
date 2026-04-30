@@ -177,6 +177,22 @@ class DataSanitizer
     sanitized
   end
 
+  # Sanitizes version number strings for RecordVersion tracking
+  # Accepts semantic versioning formats: v1.0, 1.2.3, v2.0.1
+  # Returns nil if the input does not conform to a valid version format
+  def self.sanitize_version_number(input)
+    return nil if input.nil?
+
+    input = input.to_s.strip.downcase
+    return nil if input.empty?
+
+    # Strip everything except version-safe characters (digits, dots, leading 'v')
+    sanitized = input.gsub(/[^v0-9.]/, '')
+
+    # Validate: optional 'v' followed by one to three dot-separated numeric segments
+    sanitized =~ /\Av?\d+(\.\d+){0,2}\z/ ? sanitized : nil
+  end
+
   # Batch sanitizes a hash of parameters
   # Useful for processing entire request parameter sets
   def self.sanitize_params(params_hash, sanitization_rules = {})
